@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cyber Defenders Hub</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- GEORGE -->
+  <div id="dragon-container">
+    <img id="dragon-avatar" src="images/george.png" alt="George the Calm & Wise Mint Dragon" class="calm">
+    <div id="dragon-speech">
+      George says: I’m your calm & wise mentor. Let’s train your cyber defender skills.
+    </div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <nav id="main-nav">
+    <button id="nav-home" class="nav-btn">Home</button>
+    <button id="nav-phishing" class="nav-btn">Phishing Patrol</button>
+    <button id="nav-password" class="nav-btn">Password Forge</button>
+    <button id="nav-logs" class="nav-btn">Log Hunter</button>
+    <button id="nav-bonus" class="nav-btn hidden">Secret Bonus</button>
+    <button id="sound-toggle" class="nav-btn">Sound: On</button>
+  </nav>
+
+  <!-- HOME SCREEN -->
+  <div id="home-screen" class="screen active">
+    <h1>Cyber Defenders Hub</h1>
+    <p>Train with George, the Calm & Wise Mint Dragon. Choose a mission to begin.</p>
+    <p class="hint">Complete all three missions to unlock a secret bonus investigation.</p>
+  </div>
+
+  <!-- GAME SCREEN -->
+  <div id="game-screen" class="screen">
+    <h1 id="game-title"></h1>
+    <p id="game-subtitle"></p>
+
+    <div id="game-content" class="hidden">
+
+      <!-- INTRO CARD -->
+      <div id="intro-card" class="card hidden">
+        <p id="intro-text"></p>
+        <button id="intro-continue" class="cdh-btn">Continue</button>
+      </div>
+
+      <!-- WISDOM CARD -->
+      <div id="wisdom-card" class="card hidden">
+        <p id="wisdom-text"></p>
+        <button id="wisdom-continue" class="cdh-btn">Start</button>
+      </div>
+
+      <!-- CONGRATS CARD -->
+      <div id="congrats-card" class="card hidden">
+        <p id="congrats-text"></p>
+        <button id="congrats-home" class="cdh-btn">Return Home</button>
+      </div>
+
+      <!-- FULL COMPLETION CARD -->
+      <div id="full-completion-card" class="card hidden">
+        <h2>You Are a True Cyber Defender!</h2>
+        <p>George is proud of your dedication.</p>
+      </div>
+
+      <!-- PHISHING GAME -->
+      <div id="phishing-game" class="game hidden">
+        <p id="phishing-tip" class="tip"></p>
+        <div id="phishing-email" class="email-box"></div>
+        <div class="choice-row">
+          <button id="phishing-safe" class="cdh-btn secondary">Safe</button>
+          <button id="phishing-phish" class="cdh-btn danger">Phish</button>
+        </div>
+        <p id="phishing-feedback"></p>
+      </div>
+
+      <!-- PASSWORD GAME -->
+      <div id="password-game" class="game hidden">
+        <p id="password-tip" class="tip"></p>
+        <input id="password-input" type="text" placeholder="Enter a password or passphrase..." />
+        <button id="password-check" class="cdh-btn">Check</button>
+        <p id="password-feedback"></p>
+      </div>
+
+      <!-- LOG HUNTER -->
+      <div id="logs-game" class="game hidden">
+        <p id="logs-tip" class="tip"></p>
+        <div id="logs-list"></div>
+        <div id="logs-options"></div>
+        <p id="logs-feedback"></p>
+      </div>
+
+      <!-- BONUS LEVEL -->
+      <div id="bonus-game" class="game hidden">
+        <p id="bonus-content"></p>
+        <p id="bonus-tip" class="tip"></p>
+        <div id="bonus-choices"></div>
+        <p id="bonus-feedback"></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- AUDIO -->
+  <audio id="sound-correct" src="sounds/correct.mp3"></audio>
+  <audio id="sound-wrong" src="sounds/wrong.mp3"></audio>
+  <audio id="sound-levelcomplete" src="sounds/levelcomplete.mp3"></audio>
+
+  <script src="game.js"></script>
+</body>
+</html>
