@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cyber Defenders – With George the Green Dragon</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>Cyber Defenders</h1>
+      <p class="subtitle">Learn to stay safe online with George the Green Dragon.</p>
+    </header>
+
+    <main>
+      <!-- START SCREEN -->
+      <div id="start-screen" class="card">
+        <h2>Welcome!</h2>
+        <div class="companion intro">
+          <div class="companion-avatar">🐉</div>
+          <p>Hi! I'm George the Green Dragon. I’ll help you stay safe online.</p>
+        </div>
+        <p>
+          This short game will teach you simple cyber security habits:
+          strong passwords, spotting scams, safe browsing, and more.
+        </p>
+        <button id="start-btn" class="btn primary">Start the Quest</button>
+      </div>
+
+      <!-- GAME SCREEN -->
+      <div id="game-screen" class="card hidden">
+        <div id="companion" class="companion">
+          <div class="companion-avatar">🐉</div>
+          <p id="companion-text">Hi, I'm George! Ready to learn some cyber‑skills?</p>
+        </div>
+
+        <div class="progress">
+          <span id="progress-text">Question 1 of 1</span>
+          <div class="progress-bar">
+            <div id="progress-fill"></div>
+          </div>
+        </div>
+
+        <h2 id="question-text"></h2>
+
+        <div id="answers" class="answers"></div>
+
+        <button id="next-btn" class="btn primary" disabled>Next</button>
+
+        <p id="feedback" class="feedback"></p>
+      </div>
+
+      <!-- END SCREEN -->
+      <div id="end-screen" class="card hidden">
+        <h2>Your Results</h2>
+        <p id="score-text"></p>
+        <p id="summary-text"></p>
+
+        <div id="companion-end" class="companion hidden">
+          <div class="companion-avatar">🐉</div>
+          <p id="companion-end-text"></p>
+        </div>
+
+        <button id="restart-btn" class="btn secondary">Play Again</button>
+      </div>
+    </main>
+
+    <footer>
+      <p>Made for learning cyber security basics. Guided by George the Green Dragon.</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
