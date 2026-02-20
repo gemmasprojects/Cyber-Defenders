@@ -1,175 +1,229 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+const questions = [
+  {
+    category: "Passwords",
+    text: "Which is the safest password?",
+    answers: [
+      "password123",
+      "Gem2024",
+      "T!m3_to_R3@d_B00ks!",
+      "123456"
+    ],
+    correctIndex: 2,
+    explanation:
+      "Long, unusual passwords with a mix of letters, numbers, and symbols are much harder to guess.",
+    hint: "George says: Strong passwords are like dragon treasure — rare, long, and hard to guess."
+  },
+  {
+    category: "Phishing",
+    text: "You get an email saying you won a prize and must click a link and enter your password. What should you do?",
+    answers: [
+      "Click the link quickly before it expires.",
+      "Reply with your password instead.",
+      "Delete the email or check with the official website directly.",
+      "Forward it to all your friends."
+    ],
+    correctIndex: 2,
+    explanation:
+      "Unexpected messages asking for passwords or urgent clicks are often scams. Go to the official site yourself.",
+    hint: "George says: If a message feels suspicious, trust your instincts. Dragons can smell danger."
+  },
+  {
+    category: "Updates",
+    text: "Why are software updates important for cyber security?",
+    answers: [
+      "They only change the colours of apps.",
+      "They fix security holes that attackers might use.",
+      "They slow your device down on purpose.",
+      "They delete your old files."
+    ],
+    correctIndex: 1,
+    explanation:
+      "Updates often patch security vulnerabilities, making it harder for attackers to break in.",
+    hint: "George says: Updates patch weaknesses. Even dragons need strong scales."
+  },
+  {
+    category: "Public Wi‑Fi",
+    text: "You are on free public Wi‑Fi at a café. What is the safest option?",
+    answers: [
+      "Log in to your bank and shop online.",
+      "Use it only for low‑risk browsing, and avoid entering passwords if possible.",
+      "Share the Wi‑Fi with strangers by giving them your accounts.",
+      "Turn off all security settings to make it faster."
+    ],
+    correctIndex: 1,
+    explanation:
+      "Public Wi‑Fi can be risky. Avoid sensitive logins like banking unless you use extra protection like a VPN.",
+    hint: "George says: Public Wi‑Fi is like an open cave — be careful what treasure you reveal."
+  },
+  {
+    category: "Devices",
+    text: "What is a simple way to protect your phone or laptop?",
+    answers: [
+      "Leave it unlocked so friends can use it.",
+      "Use a screen lock (PIN, password, fingerprint, or face ID).",
+      "Write your password on a sticky note on the screen.",
+      "Share your PIN with anyone who asks."
+    ],
+    correctIndex: 1,
+    explanation:
+      "A screen lock helps keep your data safe if your device is lost or someone else picks it up.",
+    hint: "George says: Lock your device like you’d lock a treasure chest."
+  },
+  {
+    category: "Downloads",
+    text: "A website offers a 'free cracked' version of an expensive game. What is the safest choice?",
+    answers: [
+      "Download it—free is always good.",
+      "Download it only if a friend already has it.",
+      "Avoid it; it could contain malware and is likely illegal.",
+      "Turn off antivirus first so it doesn’t block it."
+    ],
+    correctIndex: 2,
+    explanation:
+      "Cracked software is often illegal and can hide malware. Stick to official stores and trusted sources.",
+    hint: "George says: Free cracked downloads often hide traps. Stick to safe, trusted sources."
+  }
+];
+
+let currentIndex = 0;
+let score = 0;
+let hasAnswered = false;
+
+const startScreen = document.getElementById("start-screen");
+const gameScreen = document.getElementById("game-screen");
+const endScreen = document.getElementById("end-screen");
+
+const startBtn = document.getElementById("start-btn");
+const nextBtn = document.getElementById("next-btn");
+const restartBtn = document.getElementById("restart-btn");
+
+const questionText = document.getElementById("question-text");
+const answersContainer = document.getElementById("answers");
+const feedback = document.getElementById("feedback");
+const progressText = document.getElementById("progress-text");
+const progressFill = document.getElementById("progress-fill");
+const scoreText = document.getElementById("score-text");
+const summaryText = document.getElementById("summary-text");
+
+const companionText = document.getElementById("companion-text");
+const companionEnd = document.getElementById("companion-end");
+const companionEndText = document.getElementById("companion-end-text");
+
+startBtn.addEventListener("click", startGame);
+nextBtn.addEventListener("click", handleNext);
+restartBtn.addEventListener("click", restartGame);
+
+function startGame() {
+  currentIndex = 0;
+  score = 0;
+  startScreen.classList.add("hidden");
+  endScreen.classList.add("hidden");
+  gameScreen.classList.remove("hidden");
+  loadQuestion();
 }
 
-body {
-  background: #050816;
-  color: #f5f5f5;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 16px;
+function loadQuestion() {
+  hasAnswered = false;
+  nextBtn.disabled = true;
+  feedback.textContent = "";
+
+  const q = questions[currentIndex];
+  questionText.textContent = `${q.category}: ${q.text}`;
+
+  // George gives a hint
+  companionText.textContent = q.hint;
+
+  progressText.textContent = `Question ${currentIndex + 1} of ${questions.length}`;
+  const progressPercent = ((currentIndex + 1) / questions.length) * 100;
+  progressFill.style.width = `${progressPercent}%`;
+
+  answersContainer.innerHTML = "";
+  q.answers.forEach((answer, index) => {
+    const btn = document.createElement("button");
+    btn.classList.add("btn", "answer-btn");
+    btn.textContent = answer;
+    btn.addEventListener("click", () => selectAnswer(index));
+    answersContainer.appendChild(btn);
+  });
 }
 
-.app {
-  max-width: 700px;
-  width: 100%;
+function selectAnswer(selectedIndex) {
+  if (hasAnswered) return;
+  hasAnswered = true;
+
+  const q = questions[currentIndex];
+  const buttons = Array.from(
+    answersContainer.querySelectorAll(".answer-btn")
+  );
+
+  buttons.forEach((btn, index) => {
+    btn.disabled = true;
+    if (index === selectedIndex) {
+      btn.classList.add("selected");
+    }
+    if (index === q.correctIndex) {
+      btn.classList.add("correct");
+    } else if (index === selectedIndex && index !== q.correctIndex) {
+      btn.classList.add("incorrect");
+    }
+  });
+
+  if (selectedIndex === q.correctIndex) {
+    score++;
+    feedback.textContent = "Correct! " + q.explanation;
+  } else {
+    feedback.textContent = "Not quite. " + q.explanation;
+  }
+
+  nextBtn.textContent =
+    currentIndex === questions.length - 1 ? "See Results" : "Next Question";
+  nextBtn.disabled = false;
 }
 
-header {
-  text-align: center;
-  margin-bottom: 16px;
+function handleNext() {
+  currentIndex++;
+  if (currentIndex >= questions.length) {
+    endGame();
+  } else {
+    loadQuestion();
+  }
 }
 
-h1 {
-  font-size: 2rem;
-  margin-bottom: 8px;
+function endGame() {
+  gameScreen.classList.add("hidden");
+  endScreen.classList.remove("hidden");
+
+  scoreText.textContent = `You scored ${score} out of ${questions.length}.`;
+
+  let message = "";
+  const ratio = score / questions.length;
+
+  if (ratio === 1) {
+    message = "Excellent! You’ve got strong cyber security instincts.";
+  } else if (ratio >= 0.7) {
+    message = "Great job! A few tweaks and you’ll be a cyber pro.";
+  } else if (ratio >= 0.4) {
+    message = "Nice start. Keep practising these habits to stay safer online.";
+  } else {
+    message = "This is a good first step. Replay the game and watch how your score improves.";
+  }
+
+  summaryText.textContent = message;
+
+  // George's final message
+  companionEnd.classList.remove("hidden");
+
+  if (ratio === 1) {
+    companionEndText.textContent = "Flawless! George bows to your cyber‑skills.";
+  } else if (ratio >= 0.7) {
+    companionEndText.textContent = "Great job! George says your digital armour is getting strong.";
+  } else if (ratio >= 0.4) {
+    companionEndText.textContent = "Nice effort! George believes practice sharpens your claws.";
+  } else {
+    companionEndText.textContent = "Every dragon starts small. George knows you’ll grow stronger.";
+  }
 }
 
-.subtitle {
-  font-size: 0.95rem;
-  color: #cbd5f5;
-}
-
-.card {
-  background: #111827;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-}
-
-.hidden {
-  display: none;
-}
-
-/* Companion (George) */
-.companion {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  background: #1e293b;
-  padding: 12px;
-  border-radius: 10px;
-  margin-bottom: 16px;
-  border-left: 4px solid #22c55e;
-}
-
-.companion-avatar {
-  font-size: 2rem;
-}
-
-.companion p {
-  margin: 0;
-  color: #e2e8f0;
-  font-size: 0.95rem;
-}
-
-.companion.intro {
-  margin-top: 12px;
-}
-
-#companion-end {
-  margin-top: 16px;
-}
-
-/* Progress bar */
-.progress {
-  margin-bottom: 16px;
-}
-
-.progress-bar {
-  width: 100%;
-  height: 10px;
-  background: #1f2937;
-  border-radius: 999px;
-  overflow: hidden;
-  margin-top: 6px;
-}
-
-#progress-fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #22c55e, #3b82f6);
-  transition: width 0.3s ease;
-}
-
-/* Questions */
-#question-text {
-  font-size: 1.2rem;
-  margin-bottom: 16px;
-}
-
-.answers {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 16px;
-}
-
-.btn {
-  border: none;
-  border-radius: 999px;
-  padding: 10px 18px;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.2s ease;
-}
-
-.btn.primary {
-  background: #3b82f6;
-  color: #f9fafb;
-}
-
-.btn.secondary {
-  background: #4b5563;
-  color: #f9fafb;
-}
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: default;
-}
-
-.btn:not(:disabled):hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-}
-
-.answer-btn {
-  text-align: left;
-  background: #1f2937;
-  color: #e5e7eb;
-  border: 1px solid transparent;
-}
-
-.answer-btn.selected {
-  border-color: #3b82f6;
-  background: #111827;
-}
-
-.answer-btn.correct {
-  border-color: #22c55e;
-  background: #064e3b;
-}
-
-.answer-btn.incorrect {
-  border-color: #ef4444;
-  background: #7f1d1d;
-}
-
-.feedback {
-  min-height: 40px;
-  font-size: 0.95rem;
-  color: #e5e7eb;
-}
-
-footer {
-  text-align: center;
-  margin-top: 12px;
-  font-size: 0.8rem;
-  color: #9ca3af;
+function restartGame() {
+  startGame();
 }
